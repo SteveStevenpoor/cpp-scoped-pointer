@@ -1,6 +1,6 @@
 template<typename T>
 class ScopedPointer {
-    T* pointer;
+    T* pointer = nullptr;
 
 public:
     ScopedPointer(T* raw) : pointer(raw) {};
@@ -18,6 +18,16 @@ public:
     ScopedPointer(ScopedPointer&& other) {
         pointer = other.pointer;
         other.pointer = nullptr;
+    }
+
+    ScopedPointer& operator=(ScopedPointer other) {
+        std::swap(pointer, other.pointer);
+
+        return *this;
+    }
+
+    T& get() const {
+        return *pointer;
     }
 
     ~ScopedPointer() {
